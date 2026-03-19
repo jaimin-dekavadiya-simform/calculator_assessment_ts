@@ -1,5 +1,4 @@
 import {
-  TconstantMap,
   TfunctionConfig,
   TfunctionMap,
   ToperatorConfig,
@@ -9,20 +8,16 @@ import {
 import { Stack } from "@/utils";
 
 export default class Parser {
-  Stack: typeof Stack;
   stack!: Stack<Ttoken>;
   output: Ttoken[] = [];
   constructor(
     private operators: ToperatorMap,
     private functions: TfunctionMap,
-    private constants: TconstantMap,
     private CStack: typeof Stack,
-  ) {
-    this.Stack = CStack;
-  }
+  ) {}
   parse(tokens: Ttoken[]): Ttoken[] {
     this.output = [];
-    this.stack = new this.Stack<Ttoken>();
+    this.stack = new this.CStack<Ttoken>();
 
     const expectOperand = { value: true };
     if (!tokens) {
@@ -76,15 +71,15 @@ export default class Parser {
       this.stack.push(token);
       return;
     }
-    const operator = this.operators.get(token.value);
+    const operator = this.operators.get(token.value.toString());
     if (!operator) {
       throw new Error("Parser : oeprator not found");
     }
     let top_token = this.stack.peek();
     let top: ToperatorConfig | TfunctionConfig | undefined =
       top_token.type === "OPERATOR"
-        ? this.operators.get(top_token.value)
-        : this.functions.get(top_token.value);
+        ? this.operators.get(top_token.value.toString())
+        : this.functions.get(top_token.value.toString());
 
     while (
       !this.stack.isEmpty() &&
@@ -94,7 +89,7 @@ export default class Parser {
     ) {
       this.output.push(this.stack.pop());
       if (!this.stack.isEmpty()) {
-        top = this.operators.get(this.stack.peek().value);
+        top = this.operators.get(this.stack.peek().value.toString());
       }
     }
     this.stack.push(token);
