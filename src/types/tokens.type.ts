@@ -1,6 +1,6 @@
-interface token {
-  type: "CONSTANT" | "BRACKET" | "FUNCTION" | "NUMBER";
+interface Ttoken {
+  type: "CONSTANT" | "BRACKET" | "FUNCTION" | "NUMBER" | "OPERATOR";
   value: string;
 }
 
-export { token };
+export { Ttoken };

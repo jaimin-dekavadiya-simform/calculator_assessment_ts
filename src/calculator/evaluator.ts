@@ -1,0 +1,97 @@
+import { TconstantMap, TfunctionMap, ToperatorMap, Ttoken } from "@/types";
+import { Stack } from "@/utils";
+
+export default class Evaluator {
+  Stack: typeof Stack;
+  stack!: Stack<number>;
+  constructor(
+    private operators: ToperatorMap,
+    private functions: TfunctionMap,
+    private constants: TconstantMap,
+    CStack: typeof Stack,
+    private precision: number,
+  ) {
+    this.Stack = CStack;
+  }
+  evaluate(postfix: Ttoken[]) {
+    this.stack = new this.Stack<number>();
+    if (!postfix) {
+      throw new Error("Evaluation : empty postfix expression");
+    }
+    for (const token of postfix) {
+      switch (token.type) {
+        case "OPERATOR":
+          this.#handleOperator(token);
+          break;
+        case "FUNCTION":
+          this.#handleFunction(token);
+          break;
+        case "NUMBER":
+          this.#handleNumber(token);
+          break;
+        case "CONSTANT":
+          this.#handleConstant(token);
+          break;
+        default:
+          throw new Error("Evaluation : Token type not available");
+          break;
+      }
+    }
+    if (this.stack.size() !== 1) {
+      throw new Error("Evaluation : Invalid PostFix Expression");
+    }
+    return this.stack.pop();
+  }
+  #handleOperator(token: Ttoken) {
+    if (this.stack.isEmpty()) {
+      throw new Error("Evaluation op: Invalid PostFix Expression 1");
+    }
+
+    const operator = this.operators.get(token.value);
+    if (!operator) {
+      throw new Error("Evaluation op: operator not found");
+    }
+    if (this.stack.size() < operator.arity) {
+      throw new Error("Evaluation op: Invalid PostFix Expression 2");
+    }
+    const operands: number[] = [];
+    for (let i = 0; i < operator.arity; i++) {
+      operands.unshift(this.stack.pop());
+    }
+
+    const answer = operator.execute(...operands);
+    this.stack.push(Number(answer.toFixed(this.precision)));
+  }
+  #handleFunction(token: Ttoken) {
+    if (this.stack.isEmpty()) {
+      throw new Error("Evaluation fn: Invalid PostFix Exression 3");
+    }
+    const function_op = this.functions.get(token.value);
+    if (!function_op) {
+      throw new Error("Evaluation fn: Function not found");
+    }
+    if (this.stack.size() < function_op.arity) {
+      throw new Error("Evaluation fn: Invalid PostFix Expression 4");
+    }
+    const operands: number[] = [];
+    for (let i = 0; i < function_op.arity; i++) {
+      operands.unshift(this.stack.pop());
+    }
+    const answer = function_op.execute(...operands);
+    this.stack.push(Number(answer.toFixed(this.precision)));
+  }
+  #handleNumber(token: Ttoken) {
+    const value = this.constants.get(token.value)?.value;
+    if (!value) {
+      throw new Error("Evaluation :invalid key while accesing Map");
+    }
+    this.stack.push(Number(value.toFixed(this.precision)));
+  }
+  #handleConstant(token: Ttoken) {
+    const value = this.constants.get(token.value)?.value;
+    if (!value) {
+      throw new Error("Evaluation :invalid key while accesing Map");
+    }
+    this.stack.push(Number(value.toFixed(this.precision)));
+  }
+}
