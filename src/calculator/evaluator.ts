@@ -47,7 +47,7 @@ export default class Evaluator {
       throw new Error("Evaluation op: Invalid PostFix Expression 1");
     }
 
-    const operator = this.operators.get(token.value);
+    const operator = this.operators.get(token.value.toString());
     if (!operator) {
       throw new Error("Evaluation op: operator not found");
     }
@@ -66,7 +66,7 @@ export default class Evaluator {
     if (this.stack.isEmpty()) {
       throw new Error("Evaluation fn: Invalid PostFix Exression 3");
     }
-    const function_op = this.functions.get(token.value);
+    const function_op = this.functions.get(token.value.toString());
     if (!function_op) {
       throw new Error("Evaluation fn: Function not found");
     }
@@ -81,14 +81,14 @@ export default class Evaluator {
     this.stack.push(Number(answer.toFixed(this.precision)));
   }
   #handleNumber(token: Ttoken) {
-    const value = this.constants.get(token.value)?.value;
+    const value = this.constants.get(token.value.toString())?.value;
     if (!value) {
       throw new Error("Evaluation :invalid key while accesing Map");
     }
     this.stack.push(Number(value.toFixed(this.precision)));
   }
   #handleConstant(token: Ttoken) {
-    const value = this.constants.get(token.value)?.value;
+    const value = this.constants.get(token.value.toString())?.value;
     if (!value) {
       throw new Error("Evaluation :invalid key while accesing Map");
     }
