@@ -8,12 +8,13 @@ import {
   ToperatorConfig,
   ToperatorMap,
   Ttoken,
-} from "@/types";
+} from "../types/index.js";
 
 export default class Tokenizer {
-  operators: ToperatorConfig[];
-  functions: TfunctionConfig[];
-  constants: TconstantConfig[];
+  private operators: ToperatorConfig[];
+  private functions: TfunctionConfig[];
+  private constants: TconstantConfig[];
+  private matchers: TmatcherFunction[];
   constructor(
     operators: ToperatorMap,
     functions: TfunctionMap,
@@ -22,6 +23,13 @@ export default class Tokenizer {
     this.operators = [...operators.values()];
     this.functions = [...functions.values()];
     this.constants = [...constants.values()];
+    this.matchers = [
+      this.#readNumber,
+      this.#readOperator,
+      this.#readParenthesis,
+      this.#readFunction,
+      this.#readConstant,
+    ];
   }
 
   tokenize(str: string): Ttoken[] {
@@ -29,22 +37,16 @@ export default class Tokenizer {
       throw new Error("Lexer : can not tokenize empty string");
     }
     const tokens: Ttoken[] = [];
-    const matchers: TmatcherFunction[] = [
-      this.#readNumber,
-      this.#readOperator,
-      this.#readParenthesis,
-      this.#readFunction,
-      this.#readConstant,
-    ];
+
     const functionCounter = { value: 0 };
     let index = 0;
     while (index < str.length) {
       let accepted = false;
-      if (str[index] === " " || str[index] == "\n" || str[index] == "\t") {
+      if (/\s/.test(str[index]!)) {
         index++;
         continue;
       }
-      for (const matcher of matchers) {
+      for (const matcher of this.matchers) {
         const res = matcher.call(this, str, index, tokens);
         if (res.accepted) {
           this.#implicitBefore(res, tokens);
@@ -238,9 +240,7 @@ export default class Tokenizer {
     if (tokens.length === 0) {
       return true;
     } else if (
-      tokens[tokens.length - 1]!.type === "CONSTANT" ||
-      tokens[tokens.length - 1]!.type === "NUMBER" ||
-      tokens[tokens.length - 1]!.value === ")"
+      ["CONSTANT", "NUMBER", ")", "!"].includes(tokens[tokens.length - 1]!.type)
     ) {
       return false;
     }

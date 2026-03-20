@@ -2,5 +2,5 @@ interface ThistoryItem {
   expression: string;
   answer: number;
 }
-
-export type { ThistoryItem };
+type Taction = "clear" | "delete" | "toggleSign" | "reciprocal" | "calculate";
+export type { ThistoryItem, Taction };
