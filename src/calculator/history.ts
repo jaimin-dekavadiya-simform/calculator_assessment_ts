@@ -1,4 +1,4 @@
-import { ThistoryItem } from "@/types";
+import { ThistoryItem } from "../types/index.js";
 
 export default class History {
   constructor(private key = "calc_history") {}

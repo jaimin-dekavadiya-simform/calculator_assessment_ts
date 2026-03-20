@@ -1,4 +1,4 @@
-import Stack from "./stack";
+import Stack from "./stack.js";
 
 function isDigit(char: string) {
   const charCode = char.charCodeAt(0);
@@ -16,4 +16,15 @@ function factorial(n: number): number {
   }
 }
 
-export { Stack, isDigit, factorial };
+function getElement<T extends Element>(
+  parent: Document | Element,
+  selector: string,
+): T {
+  const el = parent.querySelector(selector);
+  if (!el) {
+    throw new Error(`Element not found: ${selector}`);
+  }
+  return el as T;
+}
+
+export { Stack, isDigit, factorial, getElement };

@@ -4,17 +4,28 @@ import {
   ToperatorConfig,
   ToperatorMap,
   Ttoken,
-} from "@/types";
-import { Stack } from "@/utils";
+} from "../types/index.js";
+import { Stack } from "../utils/index.js";
 
 export default class Parser {
   stack!: Stack<Ttoken>;
   output: Ttoken[] = [];
+  handlers: {
+    [key: string]: (token: Ttoken, expectOperand: { value: boolean }) => void;
+  };
   constructor(
     private operators: ToperatorMap,
     private functions: TfunctionMap,
     private CStack: typeof Stack,
-  ) {}
+  ) {
+    this.handlers = {
+      OPERATOR: this.#handleOperator.bind(this),
+      FUNCTION: this.#handleFunction.bind(this),
+      NUMBER: this.#handleNumber.bind(this),
+      CONSTANT: this.#handleConstant.bind(this),
+      BRACKET: this.#handleBracket.bind(this),
+    };
+  }
   parse(tokens: Ttoken[]): Ttoken[] {
     this.output = [];
     this.stack = new this.CStack<Ttoken>();
@@ -24,26 +35,11 @@ export default class Parser {
       throw new Error("Parser : Input tokens can not be zero");
     }
     for (const token of tokens) {
-      switch (token.type) {
-        case "OPERATOR":
-          this.#handleOperator(token, expectOperand);
-          break;
-        case "FUNCTION":
-          this.#handleFunction(token, expectOperand);
-          break;
-        case "NUMBER":
-          this.#handleNumber(token, expectOperand);
-          break;
-        case "CONSTANT":
-          this.#handleConstant(token, expectOperand);
-          break;
-        case "BRACKET":
-          this.#handleBracket(token, expectOperand);
-          break;
-        default:
-          throw new Error("Parser : Token type not available");
-          break;
+      const handler = this.handlers[token.type];
+      if (!handler) {
+        throw new Error("Parser : Token type not available");
       }
+      handler(token, expectOperand);
     }
     while (!this.stack.isEmpty()) {
       let top = this.stack.pop();
@@ -128,15 +124,10 @@ export default class Parser {
     top: ToperatorConfig | TfunctionConfig,
     operator: ToperatorConfig,
   ) {
-    if (top.precedence > operator.precedence) {
-      return true;
-    } else if (top.precedence < operator.precedence) {
-      return false;
-    } else {
-      if (operator.associativity === "right") {
-        return false;
-      }
-      return true;
-    }
+    return (
+      top.precedence > operator.precedence ||
+      (top.precedence === operator.precedence &&
+        operator.associativity !== "right")
+    );
   }
 }

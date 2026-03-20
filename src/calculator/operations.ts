@@ -1,5 +1,5 @@
-import { TfunctionMap, ToperatorMap } from "@/types";
-import { factorial } from "@/utils";
+import { TfunctionMap, ToperatorMap } from "../types/index.js";
+import { factorial } from "../utils/index.js";
 
 const operators: ToperatorMap = new Map([
   [

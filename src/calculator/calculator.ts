@@ -1,8 +1,8 @@
-import { Stack } from "@/utils";
-import Evaluator from "./evaluator";
-import Parser from "./parser";
-import Tokenizer from "./tokenizer";
-import { TconstantMap, TfunctionMap, ToperatorMap } from "@/types";
+import { Stack } from "../utils/index.js";
+import Evaluator from "./evaluator.js";
+import Parser from "./parser.js";
+import Tokenizer from "./tokenizer.js";
+import { TconstantMap, TfunctionMap, ToperatorMap } from "../types/index.js";
 
 export default class Calculator {
   constructor(
