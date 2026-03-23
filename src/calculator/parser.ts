@@ -95,7 +95,6 @@ export default class Parser {
   #handleFunction(token: Ttoken, expectOperand: { value: boolean }) {
     expectOperand.value = true;
     this.stack.push(token);
-    return;
   }
   #handleNumber(token: Ttoken, expectOperand: { value: boolean }) {
     expectOperand.value = false;
