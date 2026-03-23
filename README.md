@@ -51,18 +51,33 @@ This project is an assessment implementing modular, extensible scientific calcul
    npm install
    ```
 
-3. **Build TypeScript to JavaScript:**
+3. **Build TypeScript:**
 
    ```bash
    npm run build
    ```
 
-   - This compiles TypeScript files from `src/` to JavaScript in the `dist/` folder based on `tsconfig.build.json` settings.
-   - Output includes source maps and type declarations.
+   - This runs `tsc -p tsconfig.build.json` and emits JavaScript to `dist/`, plus declarations and source maps.
 
-4. **Open in Browser:**
-   - Open `index.html` in your web browser.
-   - The compiled JavaScript files from `dist/` will be loaded and executed in the browser.
+4. **Optional Watch Build:**
+
+   ```bash
+   npm run watch
+   ```
+
+   - Rebuilds on file changes for faster local development.
+
+5. **Serve Locally:**
+
+   ```bash
+   npm run serve
+   ```
+
+   - Starts `http-server` on port `8080` and serves from project root.
+   - Open `http://localhost:8080` in your browser.
+
+6. **Open directly (no server):**
+   - You can also open `index.html` directly in a browser, but `serve` is recommended to avoid CORS/path issues with modules.
 
 ## Project Structure
 
@@ -73,7 +88,8 @@ project-root/
 ├── README.md
 ├── tsconfig.json
 ├── tsconfig.build.json
-│
+├── package.json
+|
 ├── src/
 │   ├── index.ts
 │   │
