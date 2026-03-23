@@ -3,15 +3,15 @@
     /* Language & Environment */
     "target": "ES2021",
     "lib": ["ES2021", "DOM"],
-    "module": "CommonJS",
-    "moduleResolution": "node",
+    "module": "esnext",
+    "moduleResolution": "bundler",
 
     /* Paths */
     "rootDir": "./src",
     "outDir": "./dist",
-    "baseUrl": ".",
+
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     },
 
     /* Strict Type Checking */

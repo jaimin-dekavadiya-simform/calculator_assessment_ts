@@ -1,0 +1,28 @@
+{
+  "name": "calculator_ts",
+  "version": "1.0.0",
+  "description": "This project is an assessment implementing modular, extensible scientific calculator built with TypeScript. It supports a wide range of arithmetic and scientific operations, including trigonometric, logarithmic, and power functions. The codebase is designed with object-oriented principles and loose coupling, making it easy to maintain, extend, and test.",
+  "homepage": "https://github.com/jaimin-dekavadiya-simform/calculator_assessment_ts#readme",
+  "bugs": {
+    "url": "https://github.com/jaimin-dekavadiya-simform/calculator_assessment_ts/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaimin-dekavadiya-simform/calculator_assessment_ts.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "watch": "tsc -p tsconfig.build.json --watch",
+    "serve": "npx http-server . -p 8080",
+    "serve:dist": "npx http-server ./ -p 8080",
+    "start": "npm run build && npm run serve"
+  },
+  "devDependencies": {
+    "typescript": "^5.2.2",
+    "http-server": "^14.1.1"
+  }
+}
