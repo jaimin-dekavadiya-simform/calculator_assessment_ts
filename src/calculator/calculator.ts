@@ -41,11 +41,11 @@ export default class Calculator {
       throw e;
     }
     const inFixExpression = tokenizer.tokenize(str);
-    console.log("infix : " + inFixExpression);
+    console.log("infix : ", inFixExpression);
     const postFixExpression = parser.parse(inFixExpression);
-    console.log("postfix : " + postFixExpression);
+    console.log("postfix : ", postFixExpression);
     const answer = evaluator.evaluate(postFixExpression);
-    console.log("answer : " + answer);
+    console.log("answer : ", answer);
     return answer;
   }
 }

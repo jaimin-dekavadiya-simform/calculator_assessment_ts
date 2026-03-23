@@ -131,6 +131,7 @@ export default class Tokenizer {
       throw new Error("Tokens are required");
     }
     if (str[startIndex] === "-") {
+      console.log("Tries");
       if (this.#isNegative(tokens)) {
         return {
           accepted: true,
@@ -240,7 +241,8 @@ export default class Tokenizer {
     if (tokens.length === 0) {
       return true;
     } else if (
-      ["CONSTANT", "NUMBER", ")", "!"].includes(tokens[tokens.length - 1]!.type)
+      ["CONSTANT", "NUMBER"].includes(tokens[tokens.length - 1]!.type) ||
+      [")", "!"].includes(tokens[tokens.length - 1]!.value.toString())
     ) {
       return false;
     }
