@@ -4,10 +4,6 @@
 
 This project is an assessment implementing modular, extensible scientific calculator built with TypeScript. It supports a wide range of arithmetic and scientific operations, including trigonometric, logarithmic, and power functions. The codebase is designed with object-oriented principles and loose coupling, making it easy to maintain, extend, and test.
 
-## Live demo
-
-- [Click Here to Try the Calculator](https://jaimin-dekavadiya-simform.github.io/calculator_assessment_ts/)
-
 ## Features
 
 - **Basic Arithmetic:** Addition, subtraction, multiplication, division, modulus.
