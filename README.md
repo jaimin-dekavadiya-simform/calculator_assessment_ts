@@ -6,7 +6,7 @@ This project is an assessment implementing modular, extensible scientific calcul
 
 ## Live demo
 
-- [Click Here to Try the Calculator](https://jaimin-dekavadiya-simform.github.io/assessment_calculator/)
+- [Click Here to Try the Calculator](https://jaimin-dekavadiya-simform.github.io/calculator_assessment_ts/)
 
 ## Features
 
