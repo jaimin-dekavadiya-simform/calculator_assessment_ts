@@ -95,12 +95,15 @@ A production container is provided via a multi-stage build: the TypeScript is co
    docker compose down
    ```
 
-**Without Compose:**
+**Without Compose (equivalent to the Compose commands above):**
 
 ```bash
-docker build -t calculator_ts .
-docker run -d --rm -p 8080:8080 calculator_ts
+docker build -t calculator_ts:latest .
+docker run -d --rm --name calculator -p 8080:8080 --read-only --tmpfs /tmp calculator_ts:latest
 ```
+
+   - The flags mirror the Compose service: image tag, container name, port mapping, read-only root filesystem, and a writable `/tmp` tmpfs.
+   - Stop the container with `docker stop calculator` (the `--rm` flag removes it on stop).
 
 > **Note:** The container makes no external network requests. The browser-tab favicon link was removed from `index.html` so the deployed app is fully self-contained; calculation history lives in the browser's `localStorage`, so the container is stateless and can be replaced freely.
 
