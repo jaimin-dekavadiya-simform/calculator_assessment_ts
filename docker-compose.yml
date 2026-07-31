@@ -1,0 +1,14 @@
+services:
+  calculator:
+    build:
+      context: .
+    image: calculator_ts:latest
+    container_name: calculator
+    ports:
+      - "8080:8080"
+    # Manual restart only — the app is started/stopped explicitly.
+    restart: "no"
+    # Non-root (image default) with a read-only root filesystem.
+    read_only: true
+    tmpfs:
+      - /tmp

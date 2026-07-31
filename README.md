@@ -75,6 +75,35 @@ This project is an assessment implementing modular, extensible scientific calcul
 6. **Open directly (no server):**
    - You can also open `index.html` directly in a browser, but `serve` is recommended to avoid CORS/path issues with modules.
 
+## Run with Docker
+
+A production container is provided via a multi-stage build: the TypeScript is compiled inside the image and the final image only serves the static output as a non-root user on a read-only filesystem.
+
+**Prerequisite:** Docker with Compose support.
+
+1. **Build and start:**
+
+   ```bash
+   docker compose up -d
+   ```
+
+   - The app is served at `http://localhost:8080` (container port `8080` mapped to host port `8080`).
+
+2. **Stop:**
+
+   ```bash
+   docker compose down
+   ```
+
+**Without Compose:**
+
+```bash
+docker build -t calculator_ts .
+docker run -d --rm -p 8080:8080 calculator_ts
+```
+
+> **Note:** The container makes no external network requests. The browser-tab favicon link was removed from `index.html` so the deployed app is fully self-contained; calculation history lives in the browser's `localStorage`, so the container is stateless and can be replaced freely.
+
 ## Project Structure
 
 ```
